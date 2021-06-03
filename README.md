@@ -1,2 +1,4 @@
 # BlockConjugateGradients
-This is the AM-SURE Summer Research at NYU Courant
+This is the AM-SURE Summer Research at NYU Courant. The research will be under the supervision of Dr. Florian Wechsung.
+
+The project will focus on developing a faster converging algorithm for solving multiple linear system simultaneously. In addition, this project will be studied in the context of fluid flow simulations, with the goal of improving an existing solver for Navier-Stokes and Stokes equations.
