@@ -1,7 +1,7 @@
 # This is the code for conjugate gradients iterative method
 # William Lu
 import numpy as np 
-def CG(A, x, b):
+def CG(A, x, b, tolerance=1e-6):
     # A is the matrix, x is the solution, b is the right handside
     # tol is the boundary, n is the size
     r = b-A.dot(x)
@@ -10,16 +10,16 @@ def CG(A, x, b):
         return x
     p = r
     k = 0 # number of iterations
-    while True:
-        A_p = A.dot(p)
-        alpha = np.dot(p,r)/np.dot(p,A_p)
-        x = x + alpha*p
-        r = b - A.dot(x)
-        if r <= 0.00001:
+    while True: # Each iteration: ~ n^2 FLOPs
+        A_p = A.dot(p) # ~ n^2 FLOPs
+        alpha = np.dot(p,r)/np.dot(p,A_p) # ~ n FLOPs
+        x = x + alpha*p # ~ n FLOPs
+        r = b - A.dot(x) # ~ n^2 FLOPs
+        if np.linalg.norm(r) <= tolerance:
             k+=1
             break
         else:
-            beta = -np.dot(r,A_p)/np.dot(p,A_p)
+            beta = -np.dot(r,A_p)/np.dot(p,A_p) # ~ n FLOPs
             p = r + beta*p
             k += 1
     return x        
