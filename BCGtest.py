@@ -10,7 +10,7 @@ A = create_matrix(10)
 X = create_NM(10,5)
 B = create_NM(10,5)
 # Testing
-XK = BCG(A,X,B,1e-6)
+XK = BCG(A,X,B,1e-6,len(X))
 XR =np.linalg.solve(A,B)
 if(XK.all()==XR.all()):
     print('Your BCG converges to the right solution.')

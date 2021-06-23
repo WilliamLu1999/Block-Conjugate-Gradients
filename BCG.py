@@ -3,12 +3,12 @@ import numpy as np
 import math
 import matplotlib.pyplot as plt
 import scipy.sparse.linalg
-def BCG(A,X,B,tol =1e-6):
+def BCG(A,X,B,tol =1e-6,maxiter = None):
     R = B - A@X #Residual
     P = R #Search direction
     k = 0 #iteration
     R_old = R.T@R #denominator(for easier calculation later)
-    while R.all()!=0:
+    while True:
     
         A_P =A@P
         P_A_P_inv = np.linalg.pinv(P.T@A_P)
@@ -24,6 +24,9 @@ def BCG(A,X,B,tol =1e-6):
             P = R+ P@Phi
             R_old = R.T@R #update the denominator to be the numerator's value for the next fraction
             k+=1
+            if k>=maxiter:
+                break
+            
     return X  
 
 def create_NM(n,m): #n is the size of the matrix A; m is the number of columns of intial guess
