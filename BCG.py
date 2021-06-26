@@ -33,14 +33,14 @@ def create_NM(n,m): #n is the size of the matrix A; m is the number of columns o
     X = np.random.uniform(0,10,(n,m))
     return X
 
-def find_Frobenius(A,X,B,tol =1e-6):
+def find_Frobenius(A,X,B,tol =1e-6,maxiter= None):
     R = B - A@X #Residual
     P = R #Search direction
     R_old = R.T@R #denominator(for easier calculation later)
     Xr = np.linalg.solve(A,B)
     err_F_list= []
     counter = 0
-    while R.all()!= 0:
+    while True:
         A_P =A@P
         P_A_P_inv = np.linalg.pinv(P.T@A_P)
         # Lam is the step size matrix
@@ -49,8 +49,10 @@ def find_Frobenius(A,X,B,tol =1e-6):
         R = R - A@(P@Lam)
 
         # Find the error and the Frobenius norm
-        Xe = X - Xr
-        Xe_F_norm = np.linalg.norm(Xe)
+        Xe =(Xr-X).T@A@(Xr-X)
+        
+        Xe_F_norm = math.sqrt(Xe.trace())
+
         err_F_list.append(Xe_F_norm)
 
         if np.linalg.norm(R)<=tol:
@@ -61,6 +63,9 @@ def find_Frobenius(A,X,B,tol =1e-6):
             P = R+ P@Phi
             R_old = R.T@R #update the denominator to be the numerator's value for the next fraction
             counter+=1
+            if counter>=maxiter:
+                break
+         
     return err_F_list
 
 
