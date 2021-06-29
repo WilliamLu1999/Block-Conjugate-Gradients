@@ -1,4 +1,4 @@
-from CG import CG, is_pos_def, bounds,cond_size,create_matrix,find_cond_num,cond_size,find_error
+from CG import CG, is_pos_def, bounds,cond_size,create_matrix,find_cond_num,cond_size
 import numpy as np
 import math
 import matplotlib.pyplot as plt
@@ -15,7 +15,7 @@ b1 = np.random.randint(10,size =(n,1))
 
 # First testing: xx is the cg solution, xr is the real solution, x0 is the initial guess
 x0 = np.random.randint(10,size =(n,1))
-xx = CG(C,x0,b1,1e-6)
+xx = CG(C,x0,b1,1e-6,True)
 xxx = np.asarray(xx) # convert tuple to array
 xr = np.linalg.solve(C,b1)
 
@@ -38,9 +38,11 @@ plt.title("Relationship between error and iteration")
 
 ###########################################################################
 # our error
-our_err = find_error(C,x0,b1,1e-6)
-log_energy2= [math.log10(j) for j in our_err]
-iteration2 = list(range(0,len(our_err)))
+our_list = CG(C,x0,b1,1e-6,False)
+log_energy2= [math.log10(j) for j in our_list]
+
+iteration2 = list(range(0,len(our_list)))
+
 plt.plot(iteration2,log_energy2,label ='our line')
 plt.legend()
 plt.savefig('errorComparison.pgf')
@@ -78,7 +80,7 @@ plt.savefig('errorComparison.pgf')
 ###########################################################################
 # different condition number different rate
  # decide the matrix size
-n  = np.random.randint(2,100)
+n  = 80
 # create the matrix
 
 for j in range(1,5):
@@ -86,7 +88,7 @@ for j in range(1,5):
     KAP = find_cond_num(R)
     b2 = np.random.randint(10,size =(n,1))
     x00 = np.random.randint(10,size =(n,1))
-    us_error = find_error(R,x00,b2,1e-6)
+    us_error = CG(R,x00,b2,1e-6,False)
     log_energy3= [math.log10(l) for l in us_error]
     iteration3 = list(range(0,len(us_error)))
     plt.plot(iteration3,log_energy3,label =KAP)
@@ -96,3 +98,5 @@ plt.ylabel("error log10 base")
 plt.title("Different condition number (left corner) causes different convergence rate")
 plt.show()
 plt.savefig('condtion number comparison.pgf')
+
+
