@@ -23,17 +23,21 @@ def PCG(A,x,b,M,xr,tol=1e-6,iter=None):
     z = scipy.sparse.linalg.inv(M).multiply(r) # z is in coocoo sparse format
     p = z
     k = 0 # number of iterations
-    r_old  = r.T.dot(z) # for easier future computation
+    r_old  = r.T.dot(z) # for easier future computation. numpy ndarray
     #print(r_old)
     err_list =[] 
-    
+    print(type(z))
+    print(type(r_old))
     while True: 
-        A_p = A1.dot(p) # ~ n^2 FLOPs
-        alpha = r_old/np.dot(p.T,A_p) # ~ n FLOPs
+        A_p = A1.dot(p) #  csc
+        print(type(A_p))
+        print(type(p.T.dot(A_p)))
+        alpha = r_old/(p.T.dot(A_p).toarray()) # ~ n FLOPs convert the denominator to toarray from csr
+        print(type(alpha))
         x = x + alpha*p # ~ n FLOPs
         r = r - alpha*A_p
         x_ii = x - xr
-        print(x_ii)
+        
         #print(len(x_ii))
         # finding the energy norm of x_ii
         A_xii = A1.dot(x_ii)
