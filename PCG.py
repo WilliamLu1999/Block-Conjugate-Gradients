@@ -1,6 +1,6 @@
 import numpy as np
 import scipy.sparse.linalg
-import scipy.sparse.csr_matrix
+#import scipy.sparse.csr_matrix
 import math
 A = scipy.sparse.load_npz('/Users/William/Downloads/SparseMatrices/A_n_882_gamma_0.npz')
 M =scipy.sparse.load_npz('/Users/William/Downloads/SparseMatrices/P_n_882_gamma_0.npz')
@@ -18,12 +18,12 @@ x = np.zeros((882,1))
 xr=scipy.sparse.linalg.cg(A,b,M=M) # real solution
 
 def PCG(A,x,b,M,xr,tol=1e-6,iter=None):
-    A1= A.tocsc()
+    A1= A.tocsc() # convert to csc as the terminal suggested
     r = b-A1.dot(x)
     z = scipy.sparse.linalg.inv(M).multiply(r) # z is in coocoo sparse format
-    p = r
+    p = z
     k = 0 # number of iterations
-    r_old  = r.T.dot(z)
+    r_old  = r.T.dot(z) # for easier future computation
     #print(r_old)
     err_list =[] 
     
