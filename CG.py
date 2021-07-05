@@ -5,31 +5,32 @@ import math
 import matplotlib.pyplot as plt
 import scipy as sp
 import inspect
-def CG(A, x, b, tolerance=1e-6,iter=None):
+def CG(A, x, b, xr, tolerance=1e-6,iter=None):
     # A is the matrix, x is the solution, b is the right handside
     # tol is the boundary, n is the size
     r = b-A.dot(x)
     # if r is very small, return x
     ## if r<= 0.001:
     p = r
+
     k = 0 # number of iterations
     r_old  = np.dot(r.T,r)
     err_list =[]
-    xr = np.linalg.solve(A,b)
     while True: # Each iteration: ~ n^2 FLOPs
 
         A_p = A.dot(p) # ~ n^2 FLOPs
         alpha = r_old/np.dot(p.T,A_p) # ~ n FLOPs
         x = x + alpha*p # ~ n FLOPs
+        
         r = r - alpha*A_p
 
         x_ii = x - xr
-        #print(len(x_ii))
+
         # finding the energy norm of x_ii
         A_xii = A.dot(x_ii)
-        #print(len(A_xii))
+        
         energy_norm_xi = math.sqrt(np.dot(x_ii.T,A_xii))
-        #print(len(np.dot(x_ii.T,A_xii)))
+
         err_list.append(energy_norm_xi)
         if np.linalg.norm(r) <= tolerance:
             break
@@ -39,7 +40,7 @@ def CG(A, x, b, tolerance=1e-6,iter=None):
             r_old = np.dot(r.T,r) #update the denominator to be the numerator's value for the next fraction
             k += 1     
     if iter == True:
-        return x  
+        return x,k
     else:
         return err_list
 
@@ -54,8 +55,7 @@ def create_matrix(n):
 # C is positive definite matrix
 def find_cond_num(C):
     arr = np.linalg.eigvals(C)
-    list = arr.tolist()
-    cond_num = max(list)/min(list)
+    cond_num = np.max(arr)/np.min(arr)
     return cond_num
 
 # Checking Positive definite

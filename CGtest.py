@@ -15,10 +15,10 @@ b1 = np.random.randint(10,size =(n,1))
 
 # First testing: xx is the cg solution, xr is the real solution, x0 is the initial guess
 x0 = np.random.randint(10,size =(n,1))
-xx = CG(C,x0,b1,1e-6,True)
-xxx = np.asarray(xx) # convert tuple to array
-xr = np.linalg.solve(C,b1)
 
+xr = np.linalg.solve(C,b1)
+xx = CG(C,x0,b1,xr,1e-6,True)
+xxx = np.asarray(xx) # convert tuple to array
 ###########################################################################
 # Theory error plotting
 C_x_0 = C.dot(x0) 
@@ -38,7 +38,7 @@ plt.title("Relationship between error and iteration")
 
 ###########################################################################
 # our error
-our_list = CG(C,x0,b1,1e-6,False)
+our_list = CG(C,x0,b1,xr,1e-6,False)
 log_energy2= [math.log10(j) for j in our_list]
 
 iteration2 = list(range(0,len(our_list)))
@@ -88,7 +88,8 @@ for j in range(1,5):
     KAP = find_cond_num(R)
     b2 = np.random.randint(10,size =(n,1))
     x00 = np.random.randint(10,size =(n,1))
-    us_error = CG(R,x00,b2,1e-6,False)
+    xr2 = np.linalg.solve(R,b2)
+    us_error = CG(R,x00,b2,xr2,1e-6,False)
     log_energy3= [math.log10(l) for l in us_error]
     iteration3 = list(range(0,len(us_error)))
     plt.plot(iteration3,log_energy3,label =KAP)

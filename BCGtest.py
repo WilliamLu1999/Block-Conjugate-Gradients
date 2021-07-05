@@ -25,7 +25,8 @@ W = create_matrix(n)
 # First testing: x0 is the initial guess, b1 is a block size of 1 vector
 x0 = np.random.randint(10,size =(n,1))
 b1 = np.random.randint(10,size =(n,1))
-cg_err = CG(W,x0,b1,1e-6,False)
+xxr = np.linalg.solve(W,b1)
+cg_err = CG(W,x0,b1,xxr,1e-6,False)
 log_energy_cg= [math.log10(j) for j in cg_err]
 iteration_cg = list(range(0,len(cg_err)))
 plt.plot(iteration_cg,log_energy_cg,label ='cg line')
@@ -39,8 +40,7 @@ plt.xlabel("iteration")
 plt.ylabel("error log10 base")
 plt.title("BCG versus CG of block size 1")   
 plt.show()
-print(cg_err)
-print(bcg_err)
+
 ###############################################################
 # Block size of 2,4,8,16
 for expo in range(1,5):
@@ -56,3 +56,13 @@ plt.ylabel("error log10 base")
 plt.title("BCG: different block size")   
 plt.show()
 
+#################################################################
+#graph error function, assume kappa being 10000
+u = np.linspace(-2,5000,100)
+y_1 = 2*(99/100)**u
+y_2 = 4*(0.99/1.01)**(2*u)
+plt.plot(u,y_1,label ="CG")
+plt.legend()
+plt.plot(u,y_2,label='PCG')
+plt.legend()
+plt.show()
