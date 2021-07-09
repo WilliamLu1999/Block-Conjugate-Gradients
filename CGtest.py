@@ -45,7 +45,6 @@ iteration2 = list(range(0,len(our_list)))
 
 plt.plot(iteration2,log_energy2,label ='our line')
 plt.legend()
-plt.savefig('errorComparison.pgf')
 
 ###########################################################################
 # Scipy's error line
@@ -75,7 +74,6 @@ iteration3 = list(range(0,len(history_error)))
 plt.plot(iteration3,log_energy3,label ='scipy line')
 plt.legend()
 plt.show()
-plt.savefig('errorComparison.pgf')
     
 ###########################################################################
 # different condition number different rate
@@ -98,6 +96,5 @@ plt.xlabel("iteration")
 plt.ylabel("error log10 base")
 plt.title("Different condition number (left corner) causes different convergence rate")
 plt.show()
-plt.savefig('condtion number comparison.pgf')
 
 
