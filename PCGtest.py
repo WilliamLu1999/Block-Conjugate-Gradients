@@ -17,7 +17,7 @@ x = np.zeros((A1.shape[0],1))
 xr = scipy.sparse.linalg.spsolve(A1,b) # real solution
 xr = np.reshape(xr,(A1.shape[0],1)) # make the dimension correct
 ####################################################################
-eigens1 = scipy.sparse.linalg.eigsh(A1,k = A1.shape[0]-1)
+
 eigens2 = scipy.sparse.linalg.eigsh(Minv1@A1,k = A1.shape[0]-1)
 #indexEigen = np.asarray(list(range(0,len(eigenVals))))
 #eigenVals = np.asarray(eigens,dtype= float)
@@ -107,12 +107,12 @@ sol_CG_6 = CG(A6,xx,bb,xr6,1e-6,False)  #3081
 plt.xlabel("iteration")
 plt.ylabel("error theoretical log10 base")
 plt.title("Relationship between error and iteration")
-plt.plot(iteration_pcg_1,log_pcg_1,label =('PCG-0',round(pcg_kappa_1.real,2)))
+plt.plot(iteration_pcg_1,log_pcg_1,label =('PCG, n=882, \u03B3 =0, \u03BA=',round(pcg_kappa_1.real,2)))
 log_cg_1 = [math.log10(j) for j in sol_CG_1]
 iteration_cg_1 = list(range(0,len(log_cg_1)))
 cg_kappa_1 = find_cond_num(A1.toarray())
-plt.plot(iteration_cg_1,log_cg_1,label =('CG-0',round(cg_kappa_1.real,2)))
-plt.plot(iteration_sci,log_energy_sci,label =('scipy line PCG',round(cg_kappa_1.real,2)))
+plt.plot(iteration_cg_1,log_cg_1,label =('CG, n=882, \u03B3 =0, \u03BA=',round(cg_kappa_1.real,2)))
+plt.plot(iteration_sci,log_energy_sci,label =('Scipy PCG, n=882, \u03B3 =0, \u03BA=',round(cg_kappa_1.real,2)))
 plt.legend()
 plt.show() # First graph: 882 CG vs PCG. Gamma 0. Compare condition.
 ###############################################################
@@ -120,19 +120,19 @@ plt.show() # First graph: 882 CG vs PCG. Gamma 0. Compare condition.
 plt.xlabel("iteration")
 plt.ylabel("error theoretical log10 base")
 plt.title("How different parameters/preconditioner influence convergence")
-plt.plot(iteration_pcg_1,log_pcg_1,label =('PCG-0',round(pcg_kappa_1.real,2)))
+plt.plot(iteration_pcg_1,log_pcg_1,label =('PCG, n=882, \u03B3 =0, \u03BA=',round(pcg_kappa_1.real,2)))
 plt.legend()
 log_pcg_2 = [math.log10(i) for i in sol_PCG_2]
 iteration_pcg_2 = list(range(0,len(log_pcg_2)))
 MinvA_2 = (Minv2@A2).toarray()
 pcg_kappa_2 = find_cond_num(MinvA_2)
-plt.plot(iteration_pcg_2,log_pcg_2,label =('PCG-1',round(pcg_kappa_2.real,2)))
+plt.plot(iteration_pcg_2,log_pcg_2,label =('PCG, n=882, \u03B3 =1, \u03BA=',round(pcg_kappa_2.real,2)))
 plt.legend()
 log_pcg_3 = [math.log10(i) for i in sol_PCG_3]
 iteration_pcg_3 = list(range(0,len(log_pcg_3)))
 MinvA_3 = (Minv3@A3).toarray()
 pcg_kappa_3 = find_cond_num(MinvA_3)
-plt.plot(iteration_pcg_3,log_pcg_3,label =('PCG-1000',round(pcg_kappa_3.real,2)))
+plt.plot(iteration_pcg_3,log_pcg_3,label =('PCG, n=882, \u03B3 =1000, \u03BA=',round(pcg_kappa_3.real,2)))
 plt.legend()
 plt.show()
 ###############################################################
@@ -152,38 +152,38 @@ plt.legend()
 #plt.show()
 
 ###############################################################
-# Fourth graph: how eigenvalues play a role. PCG only. size 3226. Three gamma.
+# Third graph: how eigenvalues play a role. PCG only. size 3226. Three gamma.
 plt.xlabel("iteration")
 plt.ylabel("error theoretical log10 base")
 plt.title("CG & PCG")
 log_cg_4 = [math.log10(i) for i in sol_CG_4]
 iteration_cg_4 = list(range(0,len(log_cg_4)))
 cg_kappa_4 = find_cond_num(A4.toarray())
-plt.plot(iteration_cg_4,log_cg_4,label =('CG-0',round(cg_kappa_4.real,2))) # the fourth matrix. size 3362,CG-0-4
+plt.plot(iteration_cg_4,log_cg_4,label =('CG, n=3362, \u03B3 =0, \u03BA=',round(cg_kappa_4.real,2))) # the fourth matrix. size 3362,CG-0-4
 plt.legend()
 log_cg_5 = [math.log10(i) for i in sol_CG_5]
 iteration_cg_5 = list(range(0,len(log_cg_5)))
 cg_kappa_5 = find_cond_num(A5.toarray())
-plt.plot(iteration_cg_5,log_cg_5,label =('CG-1',round(cg_kappa_5.real,2)))
+plt.plot(iteration_cg_5,log_cg_5,label =('CG, n=3362, \u03B3 =1, \u03BA=',round(cg_kappa_5.real,2)))
 plt.legend()
 log_cg_6 = [math.log10(i) for i in sol_CG_6]
 iteration_cg_6 = list(range(0,len(log_cg_6)))
 cg_kappa_6 = find_cond_num(A6.toarray())
-plt.plot(iteration_cg_6,log_cg_6,label =('CG-1000',round(cg_kappa_6.real,2)))
+plt.plot(iteration_cg_6,log_cg_6,label =('CG, n=3362, \u03B3 =1000, \u03BA=',round(cg_kappa_6.real,2)))
 plt.legend()
-plt.plot(iteration_pcg_4,log_pcg_4,label =('PCG-0',round(pcg_kappa_4.real,2)))
+plt.plot(iteration_pcg_4,log_pcg_4,label =('PCG, n=3362, \u03B3 =0, \u03BA=',round(pcg_kappa_4.real,2)))
 plt.legend()
 log_pcg_5 = [math.log10(i) for i in sol_PCG_5]
 iteration_pcg_5 = list(range(0,len(log_pcg_5)))
 MinvA_5 = (Minv5@A5).toarray()
 pcg_kappa_5 = find_cond_num(MinvA_5)
-plt.plot(iteration_pcg_5,log_pcg_5,label =('PCG-1',round(pcg_kappa_5.real,2)))
+plt.plot(iteration_pcg_5,log_pcg_5,label =('PCG, n=3362, \u03B3 =1, \u03BA=',round(pcg_kappa_5.real,2)))
 plt.legend()
 log_pcg_6 = [math.log10(i) for i in sol_PCG_6]
 iteration_pcg_6 = list(range(0,len(log_pcg_6)))
 MinvA_6 = (Minv6@A6).toarray()
 pcg_kappa_6 = find_cond_num(MinvA_6)
-plt.plot(iteration_pcg_6,log_pcg_6,label =('PCG-1000',round(pcg_kappa_6.real,2)))
+plt.plot(iteration_pcg_6,log_pcg_6,label =('PCG, n=3362, \u03B3 =1000, \u03BA=',round(pcg_kappa_6.real,2)))
 plt.legend()
 plt.show()
 ##################################################
@@ -202,6 +202,7 @@ plt.scatter(eigens4[0].real,eigens4[0].imag,s= 0.1,label ='eigenVals of A with a
 plt.legend()
 plt.show()
 '''
+eigens1 = scipy.sparse.linalg.eigsh(A1,k = A1.shape[0]-1)
 eigens3 = scipy.sparse.linalg.eigsh(Minv2@A2,k = A2.shape[0]-1)
 eigens4 = scipy.sparse.linalg.eigsh(Minv3@A3,k = A3.shape[0]-1)
 fig = plt.figure()
@@ -209,9 +210,9 @@ gs = fig.add_gridspec(4, hspace=0)
 axs = gs.subplots(sharex=True, sharey=True)
 fig.suptitle('Spread of Eigenvalues')
 axs[0].plot(eigens1[0].real,eigens1[0].imag,'+')
-axs[1].plot(eigens2[0].real, eigens2[0].imag,'+')
-axs[2].plot(eigens3[0].real, eigens3[0].imag,'+')
-axs[3].plot(eigens4[0], eigens4[0].imag, '+')
+axs[1].plot(eigens2[0].real, eigens2[0].imag,'+',color='red')
+axs[2].plot(eigens3[0].real, eigens3[0].imag,'+',color ='purple')
+axs[3].plot(eigens4[0], eigens4[0].imag, '+',color='brown')
 for ax in axs:
     ax.label_outer()
 plt.show()

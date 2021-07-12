@@ -3,13 +3,13 @@ import numpy as np
 import math
 import matplotlib.pyplot as plt
 import scipy.sparse.linalg
-def BCG(A,X,B,tol =1e-6,maxiter = None,iter=None):
+def BCG(A,X,B,Xr,tol =1e-6,maxiter = None,iter=None):
     R = B - A@X #Residual
     P = R #Search direction
     k = 0 #iteration
     R_old = R.T@R #denominator(for easier calculation later)
     err_F_list= []
-    Xr = np.linalg.solve(A,B)
+    
     while True:
     
         A_P =A@P

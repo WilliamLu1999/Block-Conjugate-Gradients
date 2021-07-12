@@ -10,8 +10,8 @@ A = create_matrix(10)
 X = create_NM(10,5)
 B = create_NM(10,5)
 # Testing
-XK = BCG(A,X,B,1e-6,len(X),True)
 XR =np.linalg.solve(A,B)
+XK = BCG(A,X,B,XR,1e-6,len(X),True)
 if(XK.all()==XR.all()):
     print('Your BCG converges to the right solution.')
 
@@ -31,7 +31,7 @@ log_energy_cg= [math.log10(j) for j in cg_err]
 iteration_cg = list(range(0,len(cg_err)))
 plt.plot(iteration_cg,log_energy_cg,label ='cg line')
 
-bcg_err = BCG(W,x0,b1,1e-6,2*n,False)
+bcg_err = BCG(W,x0,b1,xxr,1e-6,2*n,False)
 log_energy_bcg= [math.log10(p) for p in bcg_err]
 iteration_bcg = list(range(0,len(bcg_err)))
 plt.plot(iteration_bcg,log_energy_bcg,label ='bcg line')
@@ -43,13 +43,14 @@ plt.show()
 
 ###############################################################
 # Block size of 2,4,8,16
-for expo in range(1,5):
+for expo in range(0,5):
     X0 = np.random.randint(10,size=(n,2**expo))
     B1 = np.random.randint(10,size=(n,2**expo))
-    BCG_err = BCG(W,X0,B1,1e-6,2*n,False)
+    xR = np.linalg.solve(W,B1)
+    BCG_err = BCG(W,X0,B1,xR,1e-6,2*n,False)
     log_frob_BCG = [math.log10(q) for q in BCG_err]
     iteration_BCG = list(range(0,len(BCG_err)))
-    plt.plot(iteration_BCG,log_frob_BCG,label =2**expo)
+    plt.plot(iteration_BCG,log_frob_BCG,label =('b',2**expo))
     plt.legend()
 plt.xlabel("iteration")
 plt.ylabel("error log10 base")
@@ -58,6 +59,7 @@ plt.show()
 
 #################################################################
 #graph error function, assume kappa being 10000
+'''
 u = np.linspace(-2,5000,100)
 y_1 = 2*(99/100)**u
 y_2 = 4*(0.99/1.01)**(2*u)
@@ -66,3 +68,4 @@ plt.legend()
 plt.plot(u,y_2,label='PCG')
 plt.legend()
 plt.show()
+'''
