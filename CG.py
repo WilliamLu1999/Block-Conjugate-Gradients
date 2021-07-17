@@ -23,15 +23,12 @@ def CG(A, x, b, xr, tolerance=1e-6,iter=None):
         x = x + alpha*p # ~ n FLOPs
         
         r = r - alpha*A_p
-
-        x_ii = x - xr
-
-        # finding the energy norm of x_ii
-        A_xii = A.dot(x_ii)
-        
-        energy_norm_xi = math.sqrt(np.dot(x_ii.T,A_xii))
-
-        err_list.append(energy_norm_xi)
+        if iter == False:
+            x_ii = x - xr
+            # finding the energy norm of x_ii
+            A_xii = A.dot(x_ii)
+            energy_norm_xi = math.sqrt(np.dot(x_ii.T,A_xii))
+            err_list.append(energy_norm_xi)
         if np.linalg.norm(r) <= tolerance:
             break
         else:

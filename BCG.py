@@ -16,15 +16,15 @@ def BCG(A,X,B,Xr,tol =1e-6,maxiter = None,iter=None):
         P_A_P_inv = np.linalg.pinv(P.T@A_P)
         # Lam is the step size matrix
         Lam = P_A_P_inv @ R_old
-        X = X + P@Lam
-        R = R - A@(P@Lam)
+        PLam = P@Lam
+        X = X + PLam
+        R = R - A@(PLam)
 
         # Find the error and the Frobenius norm
-        Xe =(Xr-X).T@A@(Xr-X)
-        
-        Xe_F_norm = math.sqrt(Xe.trace())
-
-        err_F_list.append(Xe_F_norm)
+        if iter== False:
+            Xe =(Xr-X).T@A@(Xr-X)
+            Xe_F_norm = math.sqrt(Xe.trace())
+            err_F_list.append(Xe_F_norm)
         if np.linalg.norm(R) <= tol:
             break
         else:
@@ -36,7 +36,7 @@ def BCG(A,X,B,Xr,tol =1e-6,maxiter = None,iter=None):
             if k>=maxiter:
                 break
     if iter==True:        
-        return X  
+        return X,k  
     else:
         return err_F_list
 

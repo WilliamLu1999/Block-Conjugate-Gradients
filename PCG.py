@@ -16,12 +16,13 @@ def PCG(A,x,b,Minv,xr,tol=1e-6,iter=None):
         alpha = r_old/np.dot(p.T,A_p) # denominator is ndarray
         x = x + alpha*p
         r = r - alpha*A_p
-        x_ii = x - xr
-        # finding the energy norm of x_ii
-        A_xii = A.dot(x_ii)
-        energy_norm_xi = math.sqrt(np.dot(x_ii.T,A_xii))
-        #print(len(np.dot(x_ii.T,A_xii)))
-        err_list.append(energy_norm_xi)
+        if iter == False:
+            x_ii = x - xr
+            # finding the energy norm of x_ii
+            A_xii = A.dot(x_ii)
+            energy_norm_xi = math.sqrt(np.dot(x_ii.T,A_xii))
+            #print(len(np.dot(x_ii.T,A_xii)))
+            err_list.append(energy_norm_xi)
         if np.linalg.norm(r) <= tol:
             break
         else:

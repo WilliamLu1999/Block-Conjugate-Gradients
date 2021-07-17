@@ -3,6 +3,7 @@ import numpy as np
 import math
 import matplotlib.pyplot as plt
 import scipy.sparse.linalg 
+import time
 # Setting up:
 n = 80
 C = create_matrix(n)
@@ -90,11 +91,14 @@ for j in range(1,5):
     us_error = CG(R,x00,b2,xr2,1e-6,False)
     log_energy3= [math.log10(l) for l in us_error]
     iteration3 = list(range(0,len(us_error)))
-    plt.plot(iteration3,log_energy3,label =('\u03BA',round(KAP.real,2)))
+    plt.plot(iteration3,log_energy3,label ='\u03BA=%1.0f'%round(KAP.real,2))
     plt.legend()
 plt.xlabel("iteration")
 plt.ylabel("error log10 base")
 plt.title("Under Different condition numbers")
 plt.show()
 
-
+start = time.time()
+CG(C,x0,b1,xr,1e-6,True)
+end = time.time()
+print(end - start)

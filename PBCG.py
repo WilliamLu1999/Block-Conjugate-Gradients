@@ -15,15 +15,18 @@ def PBCG(Minv,A,X,B,XR,tol=1e-6,iter=None,maxiter=None):
         A_P = A@P #  ndarray
         P_A_P_inv = np.linalg.pinv(P.T@A_P)
         Lam = P_A_P_inv@ R_old# alpha matrix
-        X = X + P@Lam
-        R = R - A@(P@Lam)
-        
-        Xe =(XR-X).T@A@(XR-X)
-        Xe_F_norm = math.sqrt(Xe.trace())
-        err_F_list.append(Xe_F_norm)
+        PLam = P@Lam
+        X = X + PLam
+        R = R - A@(PLam)
+        if iter== False:
+            Xe =(XR-X).T@A@(XR-X)
+            Xe_F_norm = math.sqrt(Xe.trace())
+            err_F_list.append(Xe_F_norm)
+    
         if np.linalg.norm(R) <= tol:
             break
         else:
+                
             Z =Minv@R
             R_T_Z = R.T@Z
             Phi=  np.linalg.pinv(R_old)@R_T_Z
