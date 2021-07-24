@@ -145,13 +145,13 @@ for expo in range(0,5):
 t_BB2 = np.random.randint(5,size =(A2.shape[0],1)) # test CG. random column vector with size 1
 t_XX2 = np.zeros((A2.shape[0],1))
 t_XXR2 = scipy.sparse.linalg.spsolve(A2,cg_BB2) # real solution
-t_XXR2 = np.reshape(cg_XXR2,(A1.shape[0],1))
+t_XXR2 = np.reshape(cg_XXR2,(A2.shape[0],1))
 start = time.time()
 CG(A2,t_XX2,t_BB2,t_XXR2,1e-6,True)
 end = time.time()
 print(end - start) #0.012698173522949219
 start2 = time.time()
-BCG(A1,t_XX2,t_BB2,t_XXR2,1e-6,2*A2.shape[0],True)
+BCG(A2,t_XX2,t_BB2,t_XXR2,1e-6,2*A2.shape[0],True)
 end2 = time.time()
 print(end2 - start2) #
 
