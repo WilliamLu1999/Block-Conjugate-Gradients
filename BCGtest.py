@@ -138,3 +138,39 @@ for expo in range(0,5):
     end = time.time()
     #print(end - start)
     #print(BCG(A6,XX6,BB6,XXR6,1e-6,2*A6.shape[0],True))
+
+
+#################################
+# l*T(CG,1) vs. T(BCG,l)
+t_BB2 = np.random.randint(5,size =(A2.shape[0],1)) # test CG. random column vector with size 1
+t_XX2 = np.zeros((A2.shape[0],1))
+t_XXR2 = scipy.sparse.linalg.spsolve(A2,cg_BB2) # real solution
+t_XXR2 = np.reshape(cg_XXR2,(A1.shape[0],1))
+start = time.time()
+CG(A2,t_XX2,t_BB2,t_XXR2,1e-6,True)
+end = time.time()
+print(end - start) #0.012698173522949219
+start2 = time.time()
+BCG(A1,cg_XX2,cg_BB2,cg_XXR2,1e-6,2*A2.shape[0],True)
+end2 = time.time()
+print(end2 - start2) #
+
+
+'''
+plt.plot(iteration_BCG,log_BCG_err,label ='b=%1.0f'%2**expo)
+plt.xlabel("block size")
+plt.ylabel("time in seconds")
+plt.title("BCG versus")   
+plt.show()'''
+
+J =[[1,2],
+[3,5]]
+start3 = time.time()
+j1 = np.linalg.inv(J)
+end3 = time.time()
+print(end3-start3)
+
+start4 = time.time()
+j2 = np.linalg.pinv(J)
+end4 = time.time()
+print(end3-start3)

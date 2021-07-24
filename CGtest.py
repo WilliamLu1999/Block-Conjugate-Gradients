@@ -102,3 +102,4 @@ start = time.time()
 CG(C,x0,b1,xr,1e-6,True)
 end = time.time()
 print(end - start)
+
