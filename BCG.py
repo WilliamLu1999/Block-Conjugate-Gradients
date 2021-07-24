@@ -12,13 +12,13 @@ def BCG(A,X,B,Xr,tol =1e-6,maxiter = None,iter=None):
     
     while True:
     
-        A_P =A@P
+        A_P = A@P
         P_A_P_inv = np.linalg.pinv(P.T@A_P)
         # Lam is the step size matrix
         Lam = P_A_P_inv @ R_old
         PLam = P@Lam
         X = X + PLam
-        R = R - A@(PLam)
+        R = R - A_P@Lam
 
         # Find the error and the Frobenius norm
         if iter== False:

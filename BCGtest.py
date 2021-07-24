@@ -141,19 +141,19 @@ for expo in range(0,5):
 
 
 #################################
-# l*T(CG,1) vs. T(BCG,l)
+# l*T(CG,1) vs. T(BCG,l) matrix 882,0
 t_BB2 = np.random.randint(5,size =(A2.shape[0],1)) # test CG. random column vector with size 1
 t_XX2 = np.zeros((A2.shape[0],1))
-t_XXR2 = scipy.sparse.linalg.spsolve(A2,cg_BB2) # real solution
-t_XXR2 = np.reshape(cg_XXR2,(A2.shape[0],1))
+t_XXR2 = scipy.sparse.linalg.spsolve(A2,t_BB2) # real solution
+t_XXR2 = np.reshape(t_XXR2,(A2.shape[0],1))
 start = time.time()
 CG(A2,t_XX2,t_BB2,t_XXR2,1e-6,True)
 end = time.time()
-print(end - start) #0.012698173522949219
+#print(end - start) #0.012698173522949219
 start2 = time.time()
 BCG(A2,t_XX2,t_BB2,t_XXR2,1e-6,2*A2.shape[0],True)
 end2 = time.time()
-print(end2 - start2) #
+#print(end2 - start2) #
 
 
 '''
@@ -163,14 +163,19 @@ plt.ylabel("time in seconds")
 plt.title("BCG versus")   
 plt.show()'''
 
-J =[[1,2],
-[3,5]]
-start3 = time.time()
-j1 = np.linalg.inv(J)
-end3 = time.time()
-print(end3-start3)
 
-start4 = time.time()
-j2 = np.linalg.pinv(J)
-end4 = time.time()
-print(end3-start3)
+#################################
+# l*T(CG,1) vs. T(BCG,l) matrix A{3362,0}
+
+t_BB4 = np.random.randint(5,size =(A4.shape[0],1)) # test CG. random column vector with size 1
+t_XX4 = np.zeros((A4.shape[0],1))
+t_XXR4 = scipy.sparse.linalg.spsolve(A4,t_BB4) # real solution
+t_XXR4 = np.reshape(t_XXR4,(A4.shape[0],1))
+start_cg_4 = time.time()
+CG(A4,t_XX4,t_BB4,t_XXR4,1e-6,True)
+end_cg_4 = time.time()
+print(end_cg_4 - start_cg_4) #
+start_bcg_4 = time.time()
+BCG(A4,t_XX4,t_BB4,t_XXR4,1e-6,2*A4.shape[0],True)
+end_bcg_4 = time.time()
+print(end_bcg_4- start_bcg_4) #
