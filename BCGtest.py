@@ -151,7 +151,7 @@ CG(A2,t_XX2,t_BB2,t_XXR2,1e-6,True)
 end = time.time()
 print(end - start) #0.012698173522949219
 start2 = time.time()
-BCG(A1,cg_XX2,cg_BB2,cg_XXR2,1e-6,2*A2.shape[0],True)
+BCG(A1,t_XX2,t_BB2,t_XXR2,1e-6,2*A2.shape[0],True)
 end2 = time.time()
 print(end2 - start2) #
 
