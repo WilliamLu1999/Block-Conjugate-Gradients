@@ -1,4 +1,4 @@
-from PCG import PCG
+from PCG import PCG, timing_PCG
 from CG import CG,find_cond_num
 import numpy as np
 import scipy.sparse.linalg

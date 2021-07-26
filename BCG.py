@@ -3,6 +3,7 @@ import numpy as np
 import math
 import matplotlib.pyplot as plt
 import scipy.sparse.linalg
+import time
 def BCG(A,X,B,Xr,tol =1e-6,maxiter = None,iter=None):
     R = B - A@X #Residual
     P = R #Search direction
@@ -25,7 +26,7 @@ def BCG(A,X,B,Xr,tol =1e-6,maxiter = None,iter=None):
             Xe =(Xr-X).T@A@(Xr-X)
             Xe_F_norm = math.sqrt(Xe.trace())
             err_F_list.append(Xe_F_norm)
-        if np.linalg.norm(R) <= tol:
+        if np.max(np.linalg.norm(R,axis=0)) <= tol:
             break
         else:
             R_T_R = R.T@R
@@ -44,3 +45,13 @@ def create_NM(n,m): #n is the size of the matrix A; m is the number of columns o
     X = np.random.uniform(0,10,(n,m))
     return X
 
+def timing_BCG(A,blk): # blk is the block size
+    t_B = np.random.randint(5,size =(A.shape[0],blk)) # test CG. random column vector with size 1
+    t_X = np.zeros((A.shape[0],blk))
+    t_XR = scipy.sparse.linalg.spsolve(A,t_B) # real solution
+    t_XR = np.reshape(t_XR,(A.shape[0],blk))
+    start = time.time()
+    result = BCG(A,t_X,t_B,t_XR,1e-6,2*A.shape[0],True)
+    end = time.time()
+    iter_time = (end-start)/result[1]
+    return end-start, iter_time

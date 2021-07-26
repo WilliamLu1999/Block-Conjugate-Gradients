@@ -1,5 +1,5 @@
-from CG import create_matrix, CG, is_pos_def, bounds,cond_size,create_matrix,find_cond_num,cond_size
-from BCG import BCG,create_NM
+from CG import create_matrix, CG, is_pos_def, bounds,cond_size,create_matrix,find_cond_num,cond_size,timing_CG
+from BCG import BCG,create_NM,timing_BCG
 import numpy as np
 import math
 import matplotlib.pyplot as plt
@@ -52,7 +52,7 @@ for expo in range(0,5):
     relative_log_frob_BCG = [h/log_frob_BCG[0] for h in log_frob_BCG] # getting relative error
     log_BCG_err = [math.log10(h/BCG_err[0]) for h in BCG_err]
     iteration_BCG = list(range(0,len(BCG_err))) # length of iteration
-    plt.plot(iteration_BCG,log_BCG_err,label ='b=%1.0f'%2**expo)
+    plt.plot(iteration_BCG,log_BCG_err,label ='\u2113=%1.0f'%2**expo)
     plt.legend()
     #start = time.time()
     BCG(W,X0,B1,xR,1e-6,2*n,True)
@@ -73,109 +73,97 @@ A3 = scipy.sparse.load_npz('/Users/William/Downloads/SparseMatrices/A_n_882_gamm
 A4 = scipy.sparse.load_npz('/Users/William/Downloads/SparseMatrices/A_n_3362_gamma_0.npz')
 A5 = scipy.sparse.load_npz('/Users/William/Downloads/SparseMatrices/A_n_3362_gamma_1.npz')
 A6 = scipy.sparse.load_npz('/Users/William/Downloads/SparseMatrices/A_n_3362_gamma_1000.npz')
+A7 = scipy.sparse.load_npz('/Users/William/Downloads/Archive/A_n_13122_gamma_0.npz')
+###########################################
+# time test for matrix A1,A2,A3,A4,A5,A6. BCG. Different block size.
+for expo in range(0,5):
+    A1_BCG_time = timing_BCG(A1,2**expo)
+    print(A1_BCG_time)
 
-'''
-for expo in range(0,5):
-    BB = np.random.randint(5,size =(A1.shape[0],2**expo))
-    XX = np.zeros((A1.shape[0],2**expo))
-    XXR1 = scipy.sparse.linalg.spsolve(A1,BB) # real solution
-    XXR1 = np.reshape(XXR1,(A1.shape[0],2**expo))
-    start = time.time()
-    BCG(A1,XX,BB,XXR1,1e-6,2*A1.shape[0],True)
-    end = time.time()
-    print(end - start)
-    print(BCG(A1,XX,BB,XXR1,1e-6,2*A1.shape[0],True))
-   ''' 
-for expo in range(0,5):
-    BB2 = np.random.randint(5,size =(A2.shape[0],2**expo))
-    XX2 = np.zeros((A2.shape[0],2**expo))
-    XXR2 = scipy.sparse.linalg.spsolve(A2,BB2) # real solution
-    XXR2 = np.reshape(XXR2,(A2.shape[0],2**expo))
-    start = time.time()
-    BCG(A2,XX2,BB2,XXR2,1e-6,2*A2.shape[0],True)
-    end = time.time()
-    #print(end - start)
-    #print(BCG(A2,XX2,BB2,XXR2,1e-6,2*A2.shape[0],True))
+    A2_BCG_time = timing_BCG(A2,2**expo)
+    print(A2_BCG_time)
 
-for expo in range(0,5):
-    BB3 = np.random.randint(5,size =(A3.shape[0],2**expo))
-    XX3 = np.zeros((A3.shape[0],2**expo))
-    XXR3 = scipy.sparse.linalg.spsolve(A3,BB3) # real solution
-    XXR3 = np.reshape(XXR3,(A2.shape[0],2**expo))
-    start = time.time()
-    BCG(A3,XX3,BB3,XXR3,1e-6,2*A3.shape[0],True)
-    end = time.time()
-    #print(end - start)
-    #print(BCG(A3,XX3,BB3,XXR3,1e-6,2*A3.shape[0],True))
-    
-for expo in range(0,5):
-    BB4 = np.random.randint(5,size =(A4.shape[0],2**expo))
-    XX4 = np.zeros((A4.shape[0],2**expo))
-    XXR4 = scipy.sparse.linalg.spsolve(A4,BB4) # real solution
-    XXR4 = np.reshape(XXR4,(A4.shape[0],2**expo))
-    start = time.time()
-    BCG(A4,XX4,BB4,XXR4,1e-6,2*A4.shape[0],True)
-    end = time.time()
-    #print(end - start)
-    #print(BCG(A4,XX4,BB4,XXR4,1e-6,2*A4.shape[0],True))
-for expo in range(0,5):
-    BB5 = np.random.randint(5,size =(A5.shape[0],2**expo))
-    XX5 = np.zeros((A5.shape[0],2**expo))
-    XXR5 = scipy.sparse.linalg.spsolve(A5,BB5) # real solution
-    XXR5 = np.reshape(XXR5,(A5.shape[0],2**expo))
-    start = time.time()
-    BCG(A5,XX5,BB5,XXR5,1e-6,2*A5.shape[0],True)
-    end = time.time()
-    #print(end - start)
-    #print(BCG(A5,XX5,BB5,XXR5,1e-6,2*A5.shape[0],True))
-for expo in range(0,5):
-    BB6 = np.random.randint(5,size =(A6.shape[0],2**expo))
-    XX6 = np.zeros((A6.shape[0],2**expo))
-    XXR6 = scipy.sparse.linalg.spsolve(A6,BB6) # real solution
-    XXR6 = np.reshape(XXR6,(A6.shape[0],2**expo))
-    start = time.time()
-    BCG(A6,XX6,BB6,XXR6,1e-6,2*A6.shape[0],True)
-    end = time.time()
-    #print(end - start)
-    #print(BCG(A6,XX6,BB6,XXR6,1e-6,2*A6.shape[0],True))
+    A3_BCG_time = timing_BCG(A3,2**expo)
+    print(A3_BCG_time)
 
+    A4_BCG_time = timing_BCG(A4,2**expo)
+    print(A4_BCG_time)
+
+    A5_BCG_time = timing_BCG(A5,2**expo)
+    print(A5_BCG_time)
+
+    A6_BCG_time = timing_BCG(A6,2**expo)
+    print(A6_BCG_time)
 
 #################################
-# l*T(CG,1) vs. T(BCG,l) matrix 882,0
-t_BB2 = np.random.randint(5,size =(A2.shape[0],1)) # test CG. random column vector with size 1
-t_XX2 = np.zeros((A2.shape[0],1))
-t_XXR2 = scipy.sparse.linalg.spsolve(A2,t_BB2) # real solution
-t_XXR2 = np.reshape(t_XXR2,(A2.shape[0],1))
-start = time.time()
-CG(A2,t_XX2,t_BB2,t_XXR2,1e-6,True)
-end = time.time()
-#print(end - start) #0.012698173522949219
-start2 = time.time()
-BCG(A2,t_XX2,t_BB2,t_XXR2,1e-6,2*A2.shape[0],True)
-end2 = time.time()
-#print(end2 - start2) #
+# s*T(CG,1) vs. T(BCG,l) matrix A{13122,0}
 
 
-'''
-plt.plot(iteration_BCG,log_BCG_err,label ='b=%1.0f'%2**expo)
+iteration_timing = list(2**x for x in range(0,5)) # length of iteration
+CG_tseq = []
+CG_iter_tseq =[] 
+for expo in range(0,5):
+    A7_CG_time_1 = timing_CG(A7) 
+    CG_tseq.append((2**expo)*A7_CG_time_1[0]) #  gives us the time for the algorithm of differernt blk size
+    CG_iter_tseq.append((2**expo)*A7_CG_time_1[1]) #gives us the time for each iteration of matrix vector product
+BCG_tseq = [] 
+BCG_iter_tseq =[]
+for expo in range(0,5):
+    A7_BCG_time = timing_BCG(A7,2**expo)
+    BCG_tseq.append(A7_BCG_time[0]) # gives us the time for the algorithm, not each iteration
+    BCG_iter_tseq.append(A7_BCG_time[1]) # gives us the time for each iteration of matrix vector product
+
+plt.plot(iteration_timing,CG_tseq,label = '\u2113*T(CG,1)')
+plt.legend()
+plt.plot(iteration_timing,BCG_tseq,label = 'T(BCG,\u2113)')
+plt.legend()
 plt.xlabel("block size")
 plt.ylabel("time in seconds")
-plt.title("BCG versus")   
-plt.show()'''
+plt.title("Time for BCG and CG solving many RHS")   
+plt.show()
+
+# s*T(A,1) vs T(A,l)
+plt.plot(iteration_timing,CG_iter_tseq,label = '\u2113*T(A,1)')
+plt.legend()
+plt.plot(iteration_timing,BCG_iter_tseq,label = 'T(A,\u2113)')
+plt.legend()
+plt.xlabel("block size")
+plt.ylabel("time in seconds")
+plt.title("Time for every iteration of BCG and CG")   
+plt.show()
 
 
-#################################
-# l*T(CG,1) vs. T(BCG,l) matrix A{3362,0}
+# s*T(CG,1) vs. T(BCG,l) matrix A{13122,1}
+A8 = scipy.sparse.load_npz('/Users/William/Downloads/Archive/A_n_13122_gamma_1.npz')
+#iteration_timing = list(2**x for x in range(0,5)) # length of iteration
+CG_tseq_2 = []
+CG_iter_tseq_2 =[] 
+for expo in range(0,5):
+    A8_CG_time_1 = timing_CG(A8) 
+    CG_tseq_2.append((2**expo)*A8_CG_time_1[0]) #  gives us the time for the algorithm of differernt blk size
+    CG_iter_tseq_2.append((2**expo)*A8_CG_time_1[1]) #gives us the time for each iteration of matrix vector product
+BCG_tseq_2 = [] 
+BCG_iter_tseq_2 =[]
+for expo in range(0,5):
+    A8_BCG_time = timing_BCG(A8,2**expo)
+    BCG_tseq_2.append(A8_BCG_time[0]) # gives us the time for the algorithm, not each iteration
+    BCG_iter_tseq_2.append(A8_BCG_time[1]) # gives us the time for each iteration of matrix vector product
 
-t_BB4 = np.random.randint(5,size =(A4.shape[0],1)) # test CG. random column vector with size 1
-t_XX4 = np.zeros((A4.shape[0],1))
-t_XXR4 = scipy.sparse.linalg.spsolve(A4,t_BB4) # real solution
-t_XXR4 = np.reshape(t_XXR4,(A4.shape[0],1))
-start_cg_4 = time.time()
-CG(A4,t_XX4,t_BB4,t_XXR4,1e-6,True)
-end_cg_4 = time.time()
-print(end_cg_4 - start_cg_4) #
-start_bcg_4 = time.time()
-BCG(A4,t_XX4,t_BB4,t_XXR4,1e-6,2*A4.shape[0],True)
-end_bcg_4 = time.time()
-print(end_bcg_4- start_bcg_4) #
+plt.plot(iteration_timing,CG_tseq_2,label = '\u2113*T(CG,1)')
+plt.legend()
+plt.plot(iteration_timing,BCG_tseq_2,label = 'T(BCG,\u2113)')
+plt.legend()
+plt.xlabel("block size")
+plt.ylabel("time in seconds")
+plt.title("Time for BCG and CG solving many RHS")   
+plt.show()
+
+# s*T(A,1) vs T(A,l)
+plt.plot(iteration_timing,CG_iter_tseq,label = '\u2113*T(A,1)')
+plt.legend()
+plt.plot(iteration_timing,BCG_iter_tseq,label = 'T(A,\u2113)')
+plt.legend()
+plt.xlabel("block size")
+plt.ylabel("time in seconds")
+plt.title("Time for every iteration of BCG and CG")   
+plt.show()

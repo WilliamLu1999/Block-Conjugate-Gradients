@@ -3,8 +3,9 @@
 import numpy as np 
 import math
 import matplotlib.pyplot as plt
-import scipy as sp
+import scipy.sparse.linalg
 import inspect
+import time
 def CG(A, x, b, xr, tolerance=1e-6,iter=None):
     # A is the matrix, x is the solution, b is the right handside
     # tol is the boundary, n is the size
@@ -74,6 +75,13 @@ def cond_size(x,y, ax=None, **plt_kwargs):
     ax.plot(x, y, **plt_kwargs) 
     return(ax)
 
-    
-
-
+def timing_CG(A):
+    t_b = np.random.randint(5,size =(A.shape[0],1)) # test CG. random column vector with size 1
+    t_x = np.zeros((A.shape[0],1))
+    t_xr = scipy.sparse.linalg.spsolve(A,t_b) # real solution
+    t_xr = np.reshape(t_xr,(A.shape[0],1))
+    start = time.time()
+    result =CG(A,t_x,t_b,t_xr,1e-6,True)
+    end = time.time()
+    iter_time = (end-start)/result[1]
+    return end-start, iter_time

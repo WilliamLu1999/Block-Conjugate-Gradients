@@ -1,7 +1,7 @@
 import numpy as np
 import scipy.sparse.linalg
 import math
-
+import time
 def PCG(A,x,b,Minv,xr,tol=1e-6,iter=None):
     r = b-A.dot(x)
     z = Minv@r # z is in coocoo sparse format
@@ -37,3 +37,13 @@ def PCG(A,x,b,Minv,xr,tol=1e-6,iter=None):
         return err_list
 
 
+def timing_PCG(A,P):
+    t_b = np.random.randint(5,size =(A.shape[0],1)) # test CG. random column vector with size 1
+    t_x = np.zeros((A.shape[0],1))
+    t_xr = scipy.sparse.linalg.spsolve(A,t_b) # real solution
+    t_xr = np.reshape(t_xr,(A.shape[0],1))
+    start = time.time()
+    result =PCG(A,t_x,t_b,P,t_xr,1e-6,True)
+    end = time.time()
+    iter_time = (end-start)/result[1]
+    return end-start, iter_time
