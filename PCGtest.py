@@ -159,8 +159,8 @@ plt.title("CG & PCG")
 log_cg_4 = [math.log10(i) for i in sol_CG_4]
 iteration_cg_4 = list(range(0,len(log_cg_4)))
 cg_kappa_4 = find_cond_num(A4.toarray())
-plt.plot(iteration_cg_4,log_cg_4,label =('CG, n=3362, \u03B3=0, \u03BA=%1.0f'%round(cg_kappa_4.real,2))) # the fourth matrix. size 3362,CG-0-4
-plt.legend()
+#plt.plot(iteration_cg_4,log_cg_4,label =('CG, n=3362, \u03B3=0, \u03BA=%1.0f'%round(cg_kappa_4.real,2))) # the fourth matrix. size 3362,CG-0-4
+#plt.legend()
 log_cg_5 = [math.log10(i) for i in sol_CG_5]
 iteration_cg_5 = list(range(0,len(log_cg_5)))
 cg_kappa_5 = find_cond_num(A5.toarray())
@@ -169,10 +169,10 @@ plt.legend()
 log_cg_6 = [math.log10(i) for i in sol_CG_6]
 iteration_cg_6 = list(range(0,len(log_cg_6)))
 cg_kappa_6 = find_cond_num(A6.toarray())
-plt.plot(iteration_cg_6,log_cg_6,label =('CG, n=3362, \u03B3=1000, \u03BA=%1.0f'%round(cg_kappa_6.real,2)))
-plt.legend()
-plt.plot(iteration_pcg_4,log_pcg_4,label =('PCG, n=3362, \u03B3=0, \u03BA=%1.0f'%round(pcg_kappa_4.real,2)))
-plt.legend()
+#plt.plot(iteration_cg_6,log_cg_6,label =('CG, n=3362, \u03B3=1000, \u03BA=%1.0f'%round(cg_kappa_6.real,2)))
+#plt.legend()
+#plt.plot(iteration_pcg_4,log_pcg_4,label =('PCG, n=3362, \u03B3=0, \u03BA=%1.0f'%round(pcg_kappa_4.real,2)))
+#plt.legend()
 log_pcg_5 = [math.log10(i) for i in sol_PCG_5]
 iteration_pcg_5 = list(range(0,len(log_pcg_5)))
 MinvA_5 = (Minv5@A5).toarray()
@@ -183,8 +183,8 @@ log_pcg_6 = [math.log10(i) for i in sol_PCG_6]
 iteration_pcg_6 = list(range(0,len(log_pcg_6)))
 MinvA_6 = (Minv6@A6).toarray()
 pcg_kappa_6 = find_cond_num(MinvA_6)
-plt.plot(iteration_pcg_6,log_pcg_6,label =('PCG, n=3362, \u03B3=1000, \u03BA=%1.0f'%round(pcg_kappa_6.real,2)))
-plt.legend()
+#plt.plot(iteration_pcg_6,log_pcg_6,label =('PCG, n=3362, \u03B3=1000, \u03BA=%1.0f'%round(pcg_kappa_6.real,2)))
+#plt.legend()
 plt.show()
 ##################################################
 # scatter plot for preconditioners
@@ -202,17 +202,19 @@ plt.scatter(eigens4[0].real,eigens4[0].imag,s= 0.1,label ='eigenVals of A with a
 plt.legend()
 plt.show()
 '''
-eigens1 = scipy.sparse.linalg.eigsh(A1,k = A1.shape[0]-1)
-eigens3 = scipy.sparse.linalg.eigsh(Minv2@A2,k = A2.shape[0]-1)
-eigens4 = scipy.sparse.linalg.eigsh(Minv3@A3,k = A3.shape[0]-1)
+#eigens1 = scipy.sparse.linalg.eigsh(A1,k = A1.shape[0]-1)
+#eigens3 = scipy.sparse.linalg.eigsh(Minv2@A2,k = A2.shape[0]-1)
+#eigens4 = scipy.sparse.linalg.eigsh(Minv3@A3,k = A3.shape[0]-1)
+eigens5_cg = scipy.sparse.linalg.eigsh(A5,k = A5.shape[0]-1)
+eigens5_pcg = scipy.sparse.linalg.eigsh(Minv5@A5,k = A5.shape[0]-1)
 fig = plt.figure()
-gs = fig.add_gridspec(4, hspace=0)
+gs = fig.add_gridspec(2, hspace=0)  #it should be 4 later
 axs = gs.subplots(sharex=True, sharey=True)
 fig.suptitle('Spread of Eigenvalues')
-axs[0].plot(eigens1[0].real,eigens1[0].imag,'+')
-axs[1].plot(eigens2[0].real, eigens2[0].imag,'+',color='red')
-axs[2].plot(eigens3[0].real, eigens3[0].imag,'+',color ='purple')
-axs[3].plot(eigens4[0], eigens4[0].imag, '+',color='brown')
+axs[0].plot(eigens5_cg[0].real,eigens5_cg[0].imag,'+')
+axs[1].plot(eigens5_pcg[0].real, eigens5_pcg[0].imag,'+',color='orange')
+#axs[2].plot(eigens3[0].real, eigens3[0].imag,'+',color ='purple')
+#axs[3].plot(eigens4[0], eigens4[0].imag, '+',color='brown')
 for ax in axs:
     ax.label_outer()
 plt.show()

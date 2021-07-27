@@ -217,7 +217,7 @@ plt.title("PBCG: different block size")
 
 plt.show()
 
-
+'''
 for expo in range(0,5):
     A1_PBCG_time = timing_PBCG(A1,Minv1,2**expo)
     print(A1_PBCG_time)
@@ -236,3 +236,74 @@ for expo in range(0,5):
 
     A6_PBCG_time = timing_PBCG(A6,Minv6,2**expo)
     print(A6_PBCG_time)
+'''
+###### timing graph for A{13122,0}
+A7 = scipy.sparse.load_npz('/Users/William/Downloads/Archive/A_n_13122_gamma_0.npz')
+Minv7 = scipy.sparse.load_npz('/Users/William/Downloads/Archive/P_n_13122_gamma_0.npz')
+iteration_timing = list(2**x for x in range(0,5)) # length of iteration
+PCG_tseq = []
+PCG_iter_tseq =[] 
+for expo in range(0,5):
+    A7_PCG_time_1 = timing_PCG(A7,Minv7) 
+    PCG_tseq.append((2**expo)*A7_PCG_time_1[0]) #  gives us the time for the algorithm of differernt blk size
+    PCG_iter_tseq.append((2**expo)*A7_PCG_time_1[1]) #gives us the time for each iteration of matrix vector product
+PBCG_tseq = [] 
+PBCG_iter_tseq =[]
+for expo in range(0,5):
+    A7_PBCG_time = timing_PBCG(A7,Minv7,2**expo)
+    PBCG_tseq.append(A7_PBCG_time[0]) # gives us the time for the algorithm, not each iteration
+    PBCG_iter_tseq.append(A7_PBCG_time[1]) # gives us the time for each iteration of matrix vector product
+
+plt.plot(iteration_timing,PCG_tseq,label = '\u2113*T(PCG,1)')
+plt.legend()
+plt.plot(iteration_timing,PBCG_tseq,label = 'T(PBCG,\u2113)')
+plt.legend()
+plt.xlabel("block size")
+plt.ylabel("time in seconds")
+plt.title("Time for PBCG and PCG solving many RHS")   
+plt.show()
+
+# *T(A,1) vs T(A,l)
+plt.plot(iteration_timing,PCG_iter_tseq,label = '\u2113*T(A,1)')
+plt.legend()
+plt.plot(iteration_timing,PBCG_iter_tseq,label = 'T(A,\u2113)')
+plt.legend()
+plt.xlabel("block size")
+plt.ylabel("time in seconds")
+plt.title("Time for every iteration of PBCG and PCG")   
+plt.show()
+
+A8 = scipy.sparse.load_npz('/Users/William/Downloads/Archive/A_n_13122_gamma_1.npz')
+Minv8 = scipy.sparse.load_npz('/Users/William/Downloads/Archive/P_n_13122_gamma_1.npz')
+#iteration_timing = list(2**x for x in range(0,5)) # length of iteration
+PCG_tseq_2 = []
+PCG_iter_tseq_2 =[] 
+for expo in range(0,5):
+    A8_PCG_time_2 = timing_PCG(A8,Minv8) 
+    PCG_tseq_2.append((2**expo)*A8_PCG_time_2[0]) #  gives us the time for the algorithm of differernt blk size
+    PCG_iter_tseq_2.append((2**expo)*A8_PCG_time_2[1]) #gives us the time for each iteration of matrix vector product
+PBCG_tseq_2 = [] 
+PBCG_iter_tseq_2 =[]
+for expo in range(0,5):
+    A8_PBCG_time_2 = timing_PBCG(A8,Minv8,2**expo)
+    PBCG_tseq_2.append(A8_PBCG_time_2[0]) # gives us the time for the algorithm, not each iteration
+    PBCG_iter_tseq_2.append(A8_PBCG_time_2[1]) # gives us the time for each iteration of matrix vector product
+
+plt.plot(iteration_timing,PCG_tseq_2,label = '\u2113*T(PCG,1)')
+plt.legend()
+plt.plot(iteration_timing,PBCG_tseq_2,label = 'T(PBCG,\u2113)')
+plt.legend()
+plt.xlabel("block size")
+plt.ylabel("time in seconds")
+plt.title("Time for PBCG and PCG solving many RHS")   
+plt.show()
+
+# *T(A,1) vs T(A,l)
+plt.plot(iteration_timing,PCG_iter_tseq_2,label = '\u2113*T(A,1)')
+plt.legend()
+plt.plot(iteration_timing,PBCG_iter_tseq_2,label = 'T(A,\u2113)')
+plt.legend()
+plt.xlabel("block size")
+plt.ylabel("time in seconds")
+plt.title("Time for every iteration of PBCG and PCG")   
+plt.show()
