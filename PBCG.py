@@ -51,5 +51,6 @@ def timing_PBCG(A,P,blk):
     result = PBCG(P,A,t_X,t_B,t_XR,1e-6,True,2*A.shape[0])
     end = time.time()
     iter_time = (end-start)/result[1]
-    return end-start, iter_time
+    iter_num = result[1]
+    return end-start, iter_time,iter_num
 

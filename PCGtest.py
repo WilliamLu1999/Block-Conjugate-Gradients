@@ -164,7 +164,7 @@ cg_kappa_4 = find_cond_num(A4.toarray())
 log_cg_5 = [math.log10(i) for i in sol_CG_5]
 iteration_cg_5 = list(range(0,len(log_cg_5)))
 cg_kappa_5 = find_cond_num(A5.toarray())
-plt.plot(iteration_cg_5,log_cg_5,label =('CG, n=3362, \u03B3=1, \u03BA=%1.0f'%round(cg_kappa_5.real,2)))
+plt.plot(iteration_cg_5,log_cg_5,label =('CG, n=3362,\u03BA=%1.0f'%round(cg_kappa_5.real,2))) # \u03B3=1, 
 plt.legend()
 log_cg_6 = [math.log10(i) for i in sol_CG_6]
 iteration_cg_6 = list(range(0,len(log_cg_6)))
@@ -177,7 +177,7 @@ log_pcg_5 = [math.log10(i) for i in sol_PCG_5]
 iteration_pcg_5 = list(range(0,len(log_pcg_5)))
 MinvA_5 = (Minv5@A5).toarray()
 pcg_kappa_5 = find_cond_num(MinvA_5)
-plt.plot(iteration_pcg_5,log_pcg_5,label =('PCG, n=3362, \u03B3=1, \u03BA=%1.0f'%round(pcg_kappa_5.real,2)))
+plt.plot(iteration_pcg_5,log_pcg_5,label =('PCG, n=3362, \u03BA=%1.0f'%round(pcg_kappa_5.real,2))) #\u03B3=1,
 plt.legend()
 log_pcg_6 = [math.log10(i) for i in sol_PCG_6]
 iteration_pcg_6 = list(range(0,len(log_pcg_6)))
@@ -185,7 +185,8 @@ MinvA_6 = (Minv6@A6).toarray()
 pcg_kappa_6 = find_cond_num(MinvA_6)
 #plt.plot(iteration_pcg_6,log_pcg_6,label =('PCG, n=3362, \u03B3=1000, \u03BA=%1.0f'%round(pcg_kappa_6.real,2)))
 #plt.legend()
-plt.show()
+plt.savefig("11a.png")
+plt.close()
 ##################################################
 # scatter plot for preconditioners
 '''
@@ -217,4 +218,5 @@ axs[1].plot(eigens5_pcg[0].real, eigens5_pcg[0].imag,'+',color='orange')
 #axs[3].plot(eigens4[0], eigens4[0].imag, '+',color='brown')
 for ax in axs:
     ax.label_outer()
-plt.show()
+plt.savefig("12a.png")
+plt.close()
